@@ -1,0 +1,132 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{multirow}
+\usepackage{tabu}
+\usepackage{array}
+\usepackage{abstract}
+
+\title{Handwriting Identification}
+\author{Le Kieu Anh, Pham Quoc Trung, Vu Le Mai}
+\date{July 2019}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+After a week of learning and working, our group decided to build a \textbf{Handwriting Identification} model. In this paper, we introduced 2 general concepts of Machine Learning: \textbf{The Unified Framework} and \textbf{TEFPA}, discussed how the each concept was applied in our model, and described the Handwriting Identification model in detail.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Introduction to Machine Learning:}
+\subsection{TEFPA:}
+\textbf{TEFPA} is the general model in Machine Learning, including 
+\begin{itemize}
+    \item T (Task) - input and output of the model
+    \item E (Experience) - dataset used in the model
+    \item F (Function) - functions used in the model
+    \item P (Performance) - assessment of the model (loss/accuracy)
+    \item A (Algorithm) - algorithms applied in the model
+\end{itemize}
+
+\subsection{A Simplified yet Unified Framework:}
+A framework that is used to solve all problems with machine learning.\\
+
+\begin{figure}[h!]
+\centering\includegraphics[scale=0.4]{UnifiedFramework.jpg}
+\\Image 1. Machine Learning Unified framework\\
+\end{figure}\
+
+\underline {\textbf{Notes:}} \\
+1. $g_1$: Basis function (linear function)\\
+2. $Z_g, Z_h$: Embeddings/ Coordinate vector / Basis vector \\
+3. $g_2$: Basis function \\
+4. $Z_x, Z_y$: comparable vectors\\
+
+\underline{\textbf{Brief Description:}} \\
+- Input goes through basis function $g_1$ to extract important features as embeddings (coordinate vectorS). \\
+- Function $g_2$ projects embeddings into the same space to compare predicted output with the real output.
+
+\section{Handwriting Identification}
+
+Handwriting Identification is a program that identifies writer from an image of handwritten sentences. \\
+
+\subsection{Handwriting Identification in Unified Framework}
+
+\begin{figure}[h!]
+\centering\includegraphics[scale=0.5]{handwritingUF.jpg}
+\\Image 2. Handwriting Identification's Unified framework\\
+\end{figure}\
+
+\underline{\textbf{Brief Description:}} \\
+\begin{itemize}
+    \item Original Model: \\
+    + Image of handwriting goes through CNN to extract important features as embeddings (coordinate vectors).\\
+    + Softmax function generates embeddings into probability vectors, using argmax to find writer that has the highest probability. 
+    \item Modified model: \\
+    + Image of handwriting goes through CNN to extract important features as embeddings (coordinate vectors).\\
+    + Embedding goes through kNN to find  writer with the nearest coordinate vector to it in the vector space.
+\end{itemize}
+
+\subsection{Handwriting Identification's Task:}
+
+- Input: Image of handwritten sentences 
+\begin{figure}[h!]
+\centering\includegraphics[scale=0.3]{input.png}
+\\Image 3. Input image\\
+\end{figure}\
+
+- Output: Name of writer
+\begin{figure}[h!]
+\centering\includegraphics[scale=0.6]{output.png}
+\\Image 4. Output\\
+\end{figure}\
+
+- Purpose: To identify writer based on images of handwriting. \\
+
+\subsection{Handwriting Identification's Experience:}
+- Dataset: IAM Handwriting Database \\
+- Description: The dataset includes 657 writers contributed samples of their handwriting, which were scanned at a resolution of 300dpi and saved as PNG images with 256 gray levels. \\
+- Each image is cropped into 113x113-size images, to increase the capability of the database.\\
+\textbf{- The dataset is split into train files, test files, and validation files with the ratio 4:1:1} \\ 
+- We imported images of handwritten sentences of our class's students as new data and used 'convert(mode= "L")' to convert images into grayscale.
+
+\subsection{Handwriting Identification's Function:}
+
+\textbf{Structure:} Consists of CNN (Convolutional Neural Network)\\
+\\
+\\
+\\
+\\
+\\
+\\
+\begin{figure}[h!]
+\includegraphics[scale=0.35]{CNN.jpg}
+\centering Image 5. CNN in Handwriting Identification\\
+\end{figure}
+\\
+CNN was used for the machine to extract and learn the important features in the input image.\\ 
+CNN consists of 3 main types of layers: Convolution Layer, Pooling Layer and Fully-connected Layer:\\
++ \textbf{Convolution Layer}: the objective of convolution is to extract high-level features of the image from the input image. The first convolution layer is responsible for extracting low-level features. As there are more convolution layers, the machine are able to learn higher-level features of the image. \\
++ \textbf{Pooling Layer}: is used to reduce the size of the convolved feature in the image, in order to reduce the computationtal power required to run the process. \\
++ \textbf{Fully-connected Layer}: performs classification based on the features extracted by previous layers. It typically contains softmax activation function in order to output a probability vector for each of the classification labels. \\
+
+Our original model classified handwriting of 50 writers. In order to change to a recognition model, we changed the structure of the model by removing the last layer (Fully-Connected Layer) in CNN and adding kNN algorithm. \\
+
+\subsection{Handwriting Identification's Performance:}
+To measure the loss in the session we use \textbf{cross entropy} to measure the differences between the training datas (cropped images) and the samples (images from dataset)\\
+
+\subsection{Handwriting Identification's Algorithm:}
+-Optimizer : ADAM \\
+-kNN (k Nearest Neighbors) : a supervised-learning that use K nearest data in the dataset to label new input data. We use this to calculate global average weights and label unseen handwritings (following major voting). 
+
+\section{Resources}
+http://www.fki.inf.unibe.ch/databases/iam-handwriting-database
+
+\end{document}
+
+
